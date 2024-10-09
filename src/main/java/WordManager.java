@@ -6,7 +6,8 @@ public class WordManager {
     static final String WORD_LIST_NOT_INITIALIZED_ERROR = "Word list is not initialized or empty";
     private List<String> currentWordLetters;
     private List<String> hiddenLetters;
-    private final FileReader reader;
+
+    private FileReader reader;
 
     public WordManager(FileReader reader) {
         this.reader = reader;

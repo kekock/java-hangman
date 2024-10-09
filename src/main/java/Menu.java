@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
 public class Menu {
+
     private static final String START_GAME_OPTION = "1";
     private static final String EXIT_GAME_OPTION = "2";
     private static final String WELCOME_MESSAGE = "Welcome to the hangman game! Insert number 1 to start or 2 to exit.";
@@ -11,10 +12,13 @@ public class Menu {
     private static final String COMMAND_QUIT = "n";
 
     private Game game;
-    private final Scanner input = new Scanner(System.in);
+    private FileReader reader;
+    private Scanner input;
 
-    public void setGame(Game game) {
+    public void initialize(Game game, FileReader reader, Scanner input) {
         this.game = game;
+        this.reader = reader;
+        this.input = input;
     }
 
     public void show() {
@@ -23,6 +27,7 @@ public class Menu {
             String PLAYER_CHOICE = input.nextLine();
 
             if (PLAYER_CHOICE.equals(START_GAME_OPTION)) {
+                reader.loadWordsFromFile();
                 game.start();
             } else if (PLAYER_CHOICE.equals(EXIT_GAME_OPTION)) {
                 System.out.println(GOODBYE_MESSAGE);
@@ -42,7 +47,7 @@ public class Menu {
                 game.resetGameData();
             } else if (decision.equals(COMMAND_QUIT)) {
                 System.out.println(GOODBYE_MESSAGE);
-                break;
+                System.exit(0);
             } else {
                 System.out.println(INVALID_INPUT_MESSAGE);
             }

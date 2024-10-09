@@ -1,15 +1,17 @@
+import java.util.Scanner;
+
 public class Start {
-
     public static void main(String[] args) {
-        FileReader reader = new FileReader();
-        reader.loadWordsFromFile();
 
+        FileReader reader = new FileReader();
         DisplayStatus status = new DisplayStatus();
         WordManager manager = new WordManager(reader);
-        Menu menu = new Menu();
+        Scanner input = new Scanner(System.in);
 
-        Game game = new Game(status, manager, menu);
-        menu.setGame(game);
+        Menu menu = new Menu();
+        Game game = new Game(menu, manager, status, input);
+
+        menu.initialize(game, reader, input);
         menu.show();
     }
 }

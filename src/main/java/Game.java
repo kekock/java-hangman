@@ -1,29 +1,33 @@
 import java.util.*;
 
 public class Game {
-    private final Scanner input = new Scanner(System.in);
-    private final DisplayStatus status;
-    private final WordManager manager;
-    private final Menu menu;
 
-    public Game(DisplayStatus status, WordManager manager, Menu menu) {
-        this.status = status;
-        this.manager = manager;
-        this.menu = menu;
-    }
+    private final int MAX_ATTEMPTS = 7;
+    private final int INITIAL_INCORRECT_GUESSES = 0;
+    private int remainingAttempts = MAX_ATTEMPTS;
+    private int incorrectGuesses = INITIAL_INCORRECT_GUESSES;
     private int wins = 0;
     private int losses = 0;
-    private int remainingAttempts = 7;
-    private int incorrectGuesses = 0;
     private Set<String> enteredCharacters;
 
+    private Menu menu;
+    private WordManager manager;
+    private DisplayStatus status;
+    private Scanner input;
+
+    public Game(Menu menu, WordManager manager, DisplayStatus status, Scanner input) {
+        this.menu = menu;
+        this.manager = manager;
+        this.status = status;
+        this.input = input;
+    }
 
     public void start() {
         manager.initializeWordLetters();
         enteredCharacters = new HashSet<>();
         showHangman();
 
-        while (remainingAttempts > 0 && manager.getHiddenLetters().contains("#")) {
+        while (hasAttemptsAndHiddenLetters()) {
 
             System.out.println("The secret word is: " + manager.getHiddenLetters() + ". Now guess the characters!");
             String guess = input.nextLine().toLowerCase();
@@ -48,6 +52,10 @@ public class Game {
             showHangman();
             checkGameOver(manager.getHiddenLetters(), remainingAttempts);
         }
+    }
+
+    private boolean hasAttemptsAndHiddenLetters() {
+        return remainingAttempts > 0 && manager.getHiddenLetters().contains("#");
     }
 
     private boolean isInvalidCharacter(String userInput) {
@@ -104,8 +112,8 @@ public class Game {
 
     public void resetGameData() {
         enteredCharacters.clear();
-        remainingAttempts = 7;
-        incorrectGuesses = 0;
+        remainingAttempts = MAX_ATTEMPTS;
+        incorrectGuesses = INITIAL_INCORRECT_GUESSES;
         start();
     }
 
